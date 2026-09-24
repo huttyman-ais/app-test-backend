@@ -1,0 +1,48 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: app-test-backend
+  description: Backend API for app-test (Node.js + Express)
+  annotations:
+    github.com/project-slug: huttyman-ais/app-test-backend
+    backstage.io/techdocs-ref: dir:.
+  tags: [nodejs, express, backend, api]
+spec:
+  type: service
+  lifecycle: dev
+  owner: user:default/alice
+  system: app-test
+  providesApis:
+    - app-test-backend-api
+  dependsOn:
+    - resource:app-test-database
+
+---
+apiVersion: backstage.io/v1alpha1
+kind: API
+metadata:
+  name: app-test-backend-api
+  description: REST API for app-test
+spec:
+  type: openapi
+  lifecycle: dev
+  owner: user:default/alice
+  system: app-test
+  definition: |
+    openapi: 3.0.0
+    info:
+      title: app-test API
+      version: '0.1.0'
+    paths:
+      /health:
+        get:
+          summary: Health check
+          responses:
+            '200':
+              description: OK
+      /api/items:
+        get:
+          summary: List items
+          responses:
+            '200':
+              description: OK
